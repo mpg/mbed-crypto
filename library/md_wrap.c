@@ -488,10 +488,12 @@ const mbedtls_md_info_t mbedtls_sha256_info = {
 
 #if defined(MBEDTLS_SHA512_C)
 
+#if !defined(MBEDTLS_SHA512_NO_SHA384)
 static int sha384_starts_wrap( void *ctx )
 {
     return( mbedtls_sha512_starts_ret( (mbedtls_sha512_context *) ctx, 1 ) );
 }
+#endif
 
 static int sha384_update_wrap( void *ctx, const unsigned char *input,
                                size_t ilen )
@@ -506,11 +508,13 @@ static int sha384_finish_wrap( void *ctx, unsigned char *output )
                                        output ) );
 }
 
+#if !defined(MBEDTLS_SHA512_NO_SHA384)
 static int sha384_wrap( const unsigned char *input, size_t ilen,
                         unsigned char *output )
 {
     return( mbedtls_sha512_ret( input, ilen, output, 1 ) );
 }
+#endif
 
 static void *sha384_ctx_alloc( void )
 {
@@ -540,6 +544,7 @@ static int sha384_process_wrap( void *ctx, const unsigned char *data )
                                              data ) );
 }
 
+#if !defined(MBEDTLS_SHA512_NO_SHA384)
 const mbedtls_md_info_t mbedtls_sha384_info = {
     MBEDTLS_MD_SHA384,
     "SHA384",
@@ -554,6 +559,7 @@ const mbedtls_md_info_t mbedtls_sha384_info = {
     sha384_clone_wrap,
     sha384_process_wrap,
 };
+#endif
 
 static int sha512_starts_wrap( void *ctx )
 {

@@ -56,7 +56,9 @@ static const int supported_digests[] = {
 
 #if defined(MBEDTLS_SHA512_C)
         MBEDTLS_MD_SHA512,
+#if !defined(MBEDTLS_SHA512_NO_SHA384)
         MBEDTLS_MD_SHA384,
+#endif
 #endif
 
 #if defined(MBEDTLS_SHA256_C)
@@ -125,8 +127,10 @@ const mbedtls_md_info_t *mbedtls_md_info_from_string( const char *md_name )
         return mbedtls_md_info_from_type( MBEDTLS_MD_SHA256 );
 #endif
 #if defined(MBEDTLS_SHA512_C)
+#if !defined(MBEDTLS_SHA512_NO_SHA384)
     if( !strcmp( "SHA384", md_name ) )
         return mbedtls_md_info_from_type( MBEDTLS_MD_SHA384 );
+#endif
     if( !strcmp( "SHA512", md_name ) )
         return mbedtls_md_info_from_type( MBEDTLS_MD_SHA512 );
 #endif
@@ -164,8 +168,10 @@ const mbedtls_md_info_t *mbedtls_md_info_from_type( mbedtls_md_type_t md_type )
             return( &mbedtls_sha256_info );
 #endif
 #if defined(MBEDTLS_SHA512_C)
+#if !defined(MBEDTLS_SHA512_NO_SHA384)
         case MBEDTLS_MD_SHA384:
             return( &mbedtls_sha384_info );
+#endif
         case MBEDTLS_MD_SHA512:
             return( &mbedtls_sha512_info );
 #endif
